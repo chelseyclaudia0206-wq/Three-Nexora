@@ -4,20 +4,113 @@
  */
 package view;
 
-/**
- *
- * @author Chelsey Claudia
- */
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import javax.swing.JOptionPane;
+import config.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 public class ReservasiFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ReservasiFrame.class.getName());
 
+    private void isiJenisHewan() {
+    cmbHewan.removeAllItems();
+    cmbHewan.addItem("Kucing");
+    cmbHewan.addItem("Anjing");
+    cmbHewan.addItem("Kelinci");
+    cmbHewan.setSelectedIndex(0);
+}
+
+    private void tampilData() {
+    DefaultTableModel model = new DefaultTableModel();
+
+    model.addColumn("ID Reservasi");
+    model.addColumn("Jenis Hewan");
+    model.addColumn("Check-in");
+    model.addColumn("Check-out");
+    model.addColumn("Lama Hari");
+    model.addColumn("Harga/Hari");
+    model.addColumn("Total Biaya");
+    model.addColumn("Status");
+
+    try {
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "SELECT id_reservasi, jenis_hewan, tanggal_checkin, tanggal_checkout, "
+                   + "lama_hari, harga_per_hari, total_biaya, status "
+                   + "FROM reservasi";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id_reservasi"),
+                rs.getString("jenis_hewan"),
+                rs.getString("tanggal_checkin"),
+                rs.getString("tanggal_checkout"),
+                rs.getInt("lama_hari"),
+                rs.getInt("harga_per_hari"),
+                rs.getInt("total_biaya"),
+                rs.getString("status")
+            });
+        }
+
+        tblReservasi.setModel(model);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menampilkan data reservasi: " + e.getMessage());
+    }
+}
+    
+private int getHargaByJenis(String jenisHewan) {
+    if (jenisHewan.equalsIgnoreCase("Kucing")) {
+        return 50000;
+    } else if (jenisHewan.equalsIgnoreCase("Anjing")) {
+        return 70000;
+    } else if (jenisHewan.equalsIgnoreCase("Kelinci")) {
+        return 40000;
+    } else {
+        return 50000;
+    }
+}
+
+    // Menambahkan Variabel ID
+    private String idReservasi = "";
+    private ArrayList<Integer> idHewanList = new ArrayList<>();
+    private ArrayList<String> jenisHewanList = new ArrayList<>();
     /**
      * Creates new form ReservasiFrame
      */
     public ReservasiFrame() {
         initComponents();
+        tampilData();
+        txtHargaPerHari.setEditable(false);
+        txtTotalBiaya.setEditable(false);
     }
+    
+private void kosongkanForm() {
+    idReservasi = "";
+
+    if (cmbHewan.getItemCount() > 0) {
+        cmbHewan.setSelectedIndex(0);
+    }
+
+    dcCheckin.setDate(null);
+    dcCheckout.setDate(null);
+    txtLamaHari.setText("");
+    txtTotalBiaya.setText("");
+
+    if (cmbStatus.getItemCount() > 0) {
+        cmbStatus.setSelectedIndex(0);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,21 +121,424 @@ public class ReservasiFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        btnKembali = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblReservasi = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        btnReset = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnTambah = new javax.swing.JButton();
+        btnHitung = new javax.swing.JButton();
+        cmbStatus = new javax.swing.JComboBox<>();
+        txtTotalBiaya = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtHargaPerHari = new javax.swing.JTextField();
+        txtLamaHari = new javax.swing.JTextField();
+        dcCheckout = new com.toedter.calendar.JDateChooser();
+        dcCheckin = new com.toedter.calendar.JDateChooser();
+        cmbHewan = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnKembali.setBackground(new java.awt.Color(54, 42, 0));
+        btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(255, 255, 255));
+        btnKembali.setText("Kembali");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 370, -1, -1));
+
+        tblReservasi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "No", "ID Reservasi", "Jenis Hewan", "Check-in", "Check-out", "Lama(hari)", "Harga/Hari", "Total Biaya", "Status"
+            }
+        ));
+        tblReservasi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblReservasiMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblReservasi);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 410, 910, 290));
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(43, 36, 0));
+        jLabel12.setText("Daftar Reservasi");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, -1, -1));
+
+        btnReset.setBackground(new java.awt.Color(54, 42, 0));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setText("Reset");
+        btnReset.addActionListener(this::btnResetActionPerformed);
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 320, -1, -1));
+
+        btnHapus.setBackground(new java.awt.Color(54, 42, 0));
+        btnHapus.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnHapus.setForeground(new java.awt.Color(255, 255, 255));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+        getContentPane().add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 320, -1, -1));
+
+        btnEdit.setBackground(new java.awt.Color(54, 42, 0));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 320, -1, -1));
+
+        btnTambah.setBackground(new java.awt.Color(54, 42, 0));
+        btnTambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTambah.setForeground(new java.awt.Color(255, 255, 255));
+        btnTambah.setText("+ Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+        getContentPane().add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 320, -1, -1));
+
+        btnHitung.setBackground(new java.awt.Color(54, 42, 0));
+        btnHitung.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnHitung.setForeground(new java.awt.Color(255, 255, 255));
+        btnHitung.setText("Hitung");
+        btnHitung.addActionListener(this::btnHitungActionPerformed);
+        getContentPane().add(btnHitung, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, -1, -1));
+
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Menunggu", "Aktif", "Selesai", "Dibatalkan" }));
+        cmbStatus.addActionListener(this::cmbStatusActionPerformed);
+        getContentPane().add(cmbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 240, 250, 30));
+
+        txtTotalBiaya.addActionListener(this::txtTotalBiayaActionPerformed);
+        getContentPane().add(txtTotalBiaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 200, 250, 30));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setText("Status");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 240, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setText("Total Biaya");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 200, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setText("Tanggal Check-out");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setText("Lama Hari");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setText("Harga per Hari");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 160, -1, -1));
+
+        txtHargaPerHari.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtHargaPerHari.setText("50000");
+        txtHargaPerHari.addActionListener(this::txtHargaPerHariActionPerformed);
+        getContentPane().add(txtHargaPerHari, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 160, 250, 30));
+
+        txtLamaHari.addActionListener(this::txtLamaHariActionPerformed);
+        getContentPane().add(txtLamaHari, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, 250, 30));
+        getContentPane().add(dcCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 240, 250, 30));
+        getContentPane().add(dcCheckin, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 200, 250, 30));
+
+        cmbHewan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kucing", "Anjing", "Kelinci" }));
+        cmbHewan.addActionListener(this::cmbHewanActionPerformed);
+        getContentPane().add(cmbHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, 250, 30));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setText("Tanggal Check-in");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Pilih Hewan");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(43, 36, 0));
+        jLabel5.setText("Form Reservasi");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 27)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(43, 36, 0));
+        jLabel4.setText("Reservasi");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Penitipan Hewan");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Sistem");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -32, -1, 800));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtLamaHariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLamaHariActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLamaHariActionPerformed
+
+    private void txtTotalBiayaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalBiayaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalBiayaActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+try {
+        if (idReservasi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data reservasi yang ingin diedit!");
+            return;
+        }
+
+        if (cmbHewan.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Jenis hewan harus dipilih!");
+            return;
+        }
+
+        if (dcCheckin.getDate() == null || dcCheckout.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal check-in dan check-out harus dipilih!");
+            return;
+        }
+
+        if (txtLamaHari.getText().isEmpty() || txtHargaPerHari.getText().isEmpty() || txtTotalBiaya.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Klik tombol Hitung terlebih dahulu!");
+            return;
+        }
+
+        String jenisHewan = cmbHewan.getSelectedItem().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String checkin = sdf.format(dcCheckin.getDate());
+        String checkout = sdf.format(dcCheckout.getDate());
+
+        int lamaHari = Integer.parseInt(txtLamaHari.getText());
+        int hargaPerHari = Integer.parseInt(txtHargaPerHari.getText());
+        int totalBiaya = Integer.parseInt(txtTotalBiaya.getText());
+        String status = cmbStatus.getSelectedItem().toString();
+
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "UPDATE reservasi SET jenis_hewan = ?, tanggal_checkin = ?, tanggal_checkout = ?, "
+                   + "lama_hari = ?, harga_per_hari = ?, total_biaya = ?, status = ? "
+                   + "WHERE id_reservasi = ?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, jenisHewan);
+        pst.setString(2, checkin);
+        pst.setString(3, checkout);
+        pst.setInt(4, lamaHari);
+        pst.setInt(5, hargaPerHari);
+        pst.setInt(6, totalBiaya);
+        pst.setString(7, status);
+        pst.setString(8, idReservasi);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Data reservasi berhasil diedit.");
+
+        tampilData();
+        kosongkanForm();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengedit reservasi: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+try {
+        if (idReservasi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data reservasi yang ingin dihapus!");
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin menghapus data reservasi ini?",
+            "Konfirmasi Hapus",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            Connection conn = Koneksi.getConnection();
+
+            String sql = "DELETE FROM reservasi WHERE id_reservasi = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, idReservasi);
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Data reservasi berhasil dihapus.");
+
+            tampilData();
+            kosongkanForm();
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menghapus reservasi: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    kosongkanForm();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbStatusActionPerformed
+
+    private void txtHargaPerHariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHargaPerHariActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHargaPerHariActionPerformed
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+    new AdminFrame().setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
+    private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
+    try {
+        Date checkinDate = dcCheckin.getDate();
+        Date checkoutDate = dcCheckout.getDate();
+
+        if (checkinDate == null || checkoutDate == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal check-in dan check-out harus dipilih!");
+            return;
+        }
+
+        long selisihMillis = checkoutDate.getTime() - checkinDate.getTime();
+        long lamaHari = TimeUnit.MILLISECONDS.toDays(selisihMillis);
+
+        if (lamaHari <= 0) {
+            JOptionPane.showMessageDialog(this, "Tanggal check-out harus setelah tanggal check-in!");
+            return;
+        }
+
+        int hargaPerHari = Integer.parseInt(txtHargaPerHari.getText());
+        long totalBiaya = lamaHari * hargaPerHari;
+
+        txtLamaHari.setText(String.valueOf(lamaHari));
+        txtTotalBiaya.setText(String.valueOf(totalBiaya));
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Harga per hari harus berupa angka!");
+    }
+    }//GEN-LAST:event_btnHitungActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+    try {
+        if (cmbHewan.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Jenis hewan harus dipilih!");
+            return;
+        }
+
+        if (dcCheckin.getDate() == null || dcCheckout.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal check-in dan check-out harus dipilih!");
+            return;
+        }
+
+        if (txtLamaHari.getText().isEmpty() || txtHargaPerHari.getText().isEmpty() || txtTotalBiaya.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Klik tombol Hitung terlebih dahulu!");
+            return;
+        }
+
+        String jenisHewan = cmbHewan.getSelectedItem().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String checkin = sdf.format(dcCheckin.getDate());
+        String checkout = sdf.format(dcCheckout.getDate());
+
+        int lamaHari = Integer.parseInt(txtLamaHari.getText());
+        int hargaPerHari = Integer.parseInt(txtHargaPerHari.getText());
+        int totalBiaya = Integer.parseInt(txtTotalBiaya.getText());
+        String status = cmbStatus.getSelectedItem().toString();
+
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "INSERT INTO reservasi "
+                   + "(jenis_hewan, tanggal_checkin, tanggal_checkout, lama_hari, harga_per_hari, total_biaya, status) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, jenisHewan);
+        pst.setString(2, checkin);
+        pst.setString(3, checkout);
+        pst.setInt(4, lamaHari);
+        pst.setInt(5, hargaPerHari);
+        pst.setInt(6, totalBiaya);
+        pst.setString(7, status);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Data reservasi berhasil ditambahkan.");
+
+        tampilData();
+        kosongkanForm();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menambah reservasi: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void cmbHewanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHewanActionPerformed
+     if (cmbHewan.getSelectedItem() == null) {
+        return;
+    }
+
+    String jenis = cmbHewan.getSelectedItem().toString();
+
+    if (jenis.equalsIgnoreCase("Kucing")) {
+        txtHargaPerHari.setText("50000");
+    } else if (jenis.equalsIgnoreCase("Anjing")) {
+        txtHargaPerHari.setText("70000");
+    } else if (jenis.equalsIgnoreCase("Kelinci")) {
+        txtHargaPerHari.setText("40000");
+    }
+    }//GEN-LAST:event_cmbHewanActionPerformed
+
+    private void tblReservasiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblReservasiMouseClicked
+int baris = tblReservasi.getSelectedRow();
+
+    idReservasi = tblReservasi.getValueAt(baris, 0).toString();
+
+    cmbHewan.setSelectedItem(tblReservasi.getValueAt(baris, 1).toString());
+
+    try {
+        java.util.Date checkin = new SimpleDateFormat("yyyy-MM-dd").parse(tblReservasi.getValueAt(baris, 2).toString());
+        java.util.Date checkout = new SimpleDateFormat("yyyy-MM-dd").parse(tblReservasi.getValueAt(baris, 3).toString());
+
+        dcCheckin.setDate(checkin);
+        dcCheckout.setDate(checkout);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengambil tanggal: " + e.getMessage());
+    }
+
+    txtLamaHari.setText(tblReservasi.getValueAt(baris, 4).toString());
+    txtHargaPerHari.setText(tblReservasi.getValueAt(baris, 5).toString());
+    txtTotalBiaya.setText(tblReservasi.getValueAt(baris, 6).toString());
+    cmbStatus.setSelectedItem(tblReservasi.getValueAt(baris, 7).toString());
+    }//GEN-LAST:event_tblReservasiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -70,5 +566,33 @@ public class ReservasiFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnHitung;
+    private javax.swing.JButton btnKembali;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JComboBox<String> cmbHewan;
+    private javax.swing.JComboBox<String> cmbStatus;
+    private com.toedter.calendar.JDateChooser dcCheckin;
+    private com.toedter.calendar.JDateChooser dcCheckout;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblReservasi;
+    private javax.swing.JTextField txtHargaPerHari;
+    private javax.swing.JTextField txtLamaHari;
+    private javax.swing.JTextField txtTotalBiaya;
     // End of variables declaration//GEN-END:variables
 }
