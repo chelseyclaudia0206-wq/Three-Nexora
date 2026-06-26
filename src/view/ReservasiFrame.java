@@ -121,7 +121,6 @@ private void kosongkanForm() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-<<<<<<< HEAD
         btnKembali = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblReservasi = new javax.swing.JTable();
@@ -149,14 +148,11 @@ private void kosongkanForm() {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-=======
->>>>>>> f03e0c2 (update project)
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-<<<<<<< HEAD
         btnKembali.setBackground(new java.awt.Color(54, 42, 0));
         btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnKembali.setForeground(new java.awt.Color(255, 255, 255));
@@ -295,11 +291,6 @@ private void kosongkanForm() {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -32, -1, 800));
-=======
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
-        jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 840));
->>>>>>> f03e0c2 (update project)
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -575,7 +566,6 @@ int baris = tblReservasi.getSelectedRow();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-<<<<<<< HEAD
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnHitung;
@@ -604,8 +594,5 @@ int baris = tblReservasi.getSelectedRow();
     private javax.swing.JTextField txtHargaPerHari;
     private javax.swing.JTextField txtLamaHari;
     private javax.swing.JTextField txtTotalBiaya;
-=======
-    private javax.swing.JLabel jLabel1;
->>>>>>> f03e0c2 (update project)
     // End of variables declaration//GEN-END:variables
 }
