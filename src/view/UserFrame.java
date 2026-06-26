@@ -42,6 +42,7 @@ public class UserFrame extends javax.swing.JFrame {
 
         jToggleButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jToggleButton5.setText("Logout");
+        jToggleButton5.addActionListener(this::jToggleButton5ActionPerformed);
         getContentPane().add(jToggleButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 670, 110, -1));
 
         jToggleButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -91,6 +92,10 @@ public class UserFrame extends javax.swing.JFrame {
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton5ActionPerformed
 
     /**
      * @param args the command line arguments
