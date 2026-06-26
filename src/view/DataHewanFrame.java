@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
+
 import config.Koneksi;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,17 +16,111 @@ import javax.swing.table.DefaultTableModel;
  * @author Chelsey Claudia
  */
 public class DataHewanFrame extends javax.swing.JFrame {
-private String idHewan = "";
-private ArrayList<Integer> idPemilikList = new ArrayList<>();
+    private String idHewan = "";
+    private ArrayList<Integer> idPemilikList = new ArrayList<>();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DataHewanFrame.class.getName());
 
+    private void loadPemilik() {
+    cmbPemilik.removeAllItems();
+    idPemilikList.clear();
+
+    try {
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "SELECT id_akun, nama_lengkap FROM akun WHERE role = 'pemilik'";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            idPemilikList.add(rs.getInt("id_akun"));
+            cmbPemilik.addItem(rs.getString("nama_lengkap"));
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal memuat data pemilik: " + e.getMessage());
+    }
+}
+    
+    private void isiJenisHewan() {
+    cmbJenisHewan.removeAllItems();
+    cmbJenisHewan.addItem("Kucing");
+    cmbJenisHewan.addItem("Anjing");
+    cmbJenisHewan.addItem("Kelinci");
+}
+    
+    private void tampilData() {
+    DefaultTableModel model = new DefaultTableModel();
+
+    model.addColumn("ID Hewan");
+    model.addColumn("ID Pemilik");
+    model.addColumn("Pemilik");
+    model.addColumn("Nama Hewan");
+    model.addColumn("Jenis Hewan");
+    model.addColumn("Umur");
+    model.addColumn("Catatan");
+
+    try {
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "SELECT hewan.id_hewan, hewan.id_pemilik, akun.nama_lengkap, "
+                   + "hewan.nama_hewan, hewan.jenis_hewan, hewan.umur, hewan.catatan "
+                   + "FROM hewan "
+                   + "LEFT JOIN akun ON hewan.id_pemilik = akun.id_akun";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id_hewan"),
+                rs.getInt("id_pemilik"),
+                rs.getString("nama_lengkap"),
+                rs.getString("nama_hewan"),
+                rs.getString("jenis_hewan"),
+                rs.getInt("umur"),
+                rs.getString("catatan")
+            });
+        }
+
+        tblHewan.setModel(model);
+
+        // sembunyikan kolom ID Pemilik agar tampilan lebih rapi
+        tblHewan.getColumnModel().getColumn(1).setMinWidth(0);
+        tblHewan.getColumnModel().getColumn(1).setMaxWidth(0);
+        tblHewan.getColumnModel().getColumn(1).setWidth(0);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menampilkan data hewan: " + e.getMessage());
+    }
+}
+    
+    private void kosongkanForm() {
+    idHewan = "";
+
+    if (cmbPemilik.getItemCount() > 0) {
+        cmbPemilik.setSelectedIndex(0);
+    }
+
+    if (cmbJenisHewan.getItemCount() > 0) {
+        cmbJenisHewan.setSelectedIndex(0);
+    }
+
+    txtNamaHewan.setText("");
+    txtUmur.setText("");
+    txtCatatan.setText("");
+}
+    
     /**
      * Creates new form DataHewanFrame
      */
     
     public DataHewanFrame() {
     initComponents();
+    loadPemilik();
+    isiJenisHewan();
+    tampilData();
+    setLocationRelativeTo(null);
 }
   
     /**
@@ -37,135 +132,117 @@ private ArrayList<Integer> idPemilikList = new ArrayList<>();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        btnBersihkan = new javax.swing.JToggleButton();
-        btnHapus = new javax.swing.JToggleButton();
-        btnUbah = new javax.swing.JToggleButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtCatatan = new javax.swing.JTextArea();
+        btnTambah = new javax.swing.JToggleButton();
+        btnReset = new javax.swing.JToggleButton();
+        btnKembali = new javax.swing.JToggleButton();
+        btnEdit = new javax.swing.JToggleButton();
         btnSimpan = new javax.swing.JToggleButton();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtUmur = new javax.swing.JTextField();
+        txtNamaHewan = new javax.swing.JTextField();
         cmbJenisHewan = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
         btnLogout = new javax.swing.JToggleButton();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblHewan = new javax.swing.JTable();
+        btnHapus1 = new javax.swing.JToggleButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        cmbPemilik = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("Data Pemilik");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, -1, -1));
+        txtCatatan.setColumns(20);
+        txtCatatan.setRows(5);
+        jScrollPane2.setViewportView(txtCatatan);
 
-        btnBersihkan.setText("Bersihkan");
-        btnBersihkan.addActionListener(this::btnBersihkanActionPerformed);
-        getContentPane().add(btnBersihkan, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 370, 90, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 160, 260, 140));
 
-        btnHapus.setText("Hapus");
-        btnHapus.addActionListener(this::btnHapusActionPerformed);
-        getContentPane().add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 370, 90, -1));
+        btnTambah.setForeground(new java.awt.Color(51, 51, 0));
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+        getContentPane().add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, 90, -1));
 
-        btnUbah.setText("Ubah");
-        btnUbah.addActionListener(this::btnUbahActionPerformed);
-        getContentPane().add(btnUbah, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 370, 90, -1));
+        btnReset.setText("Reset");
+        btnReset.addActionListener(this::btnResetActionPerformed);
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 390, 90, -1));
+
+        btnKembali.setText("Kembali");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 390, 90, -1));
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 380, 90, -1));
 
         btnSimpan.setForeground(new java.awt.Color(51, 51, 0));
         btnSimpan.setText("Simpan");
-        getContentPane().add(btnSimpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 370, 90, -1));
+        getContentPane().add(btnSimpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 380, 90, -1));
 
-        jTextField8.addActionListener(this::jTextField8ActionPerformed);
-        getContentPane().add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 280, 170, -1));
+        txtUmur.addActionListener(this::txtUmurActionPerformed);
+        getContentPane().add(txtUmur, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, 230, 30));
+        getContentPane().add(txtNamaHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 200, 230, 30));
 
-        jTextField7.addActionListener(this::jTextField7ActionPerformed);
-        getContentPane().add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 240, 170, -1));
-
-        jTextField6.addActionListener(this::jTextField6ActionPerformed);
-        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 200, 170, -1));
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 160, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 160, -1));
-
-        cmbJenisHewan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih Jenis Hewan --", "Anjing", "Kucing", "Kelinci" }));
+        cmbJenisHewan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Anjing", "Kucing", "Kelinci" }));
         cmbJenisHewan.addActionListener(this::cmbJenisHewanActionPerformed);
-        getContentPane().add(cmbJenisHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 160, -1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 160, -1));
-
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, 160, -1));
+        getContentPane().add(cmbJenisHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 240, 230, 30));
 
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLogout.setText("Logout");
         btnLogout.addActionListener(this::btnLogoutActionPerformed);
-        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 630, 110, -1));
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 160, 170, -1));
+        getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 80, 110, -1));
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel16.setText("Keterangan");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 280, -1, -1));
+        tblHewan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID Hewan", "Pemilik", "Nama Hewan", "Jenis Hewan", "Umur (tahun)", "Catatan"
+            }
+        ));
+        tblHewan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHewanMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblHewan);
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel15.setText("Berat (kg)");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 240, -1, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 427, 800, 270));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel14.setText("Jenis Kelamin");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 200, -1, -1));
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel13.setText("ID Pemilik");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 160, -1, -1));
+        btnHapus1.setText("Hapus");
+        btnHapus1.addActionListener(this::btnHapus1ActionPerformed);
+        getContentPane().add(btnHapus1, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 390, 90, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel12.setText("Usia");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 320, -1, -1));
+        jLabel12.setText("Catatan");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 160, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel11.setText("Ras");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 280, -1, -1));
+        jLabel11.setText("Pemilik");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 160, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel10.setText("Jenis Hewan");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 240, -1, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 250, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel9.setText("Nama Hewan");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 200, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 200, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel8.setText("ID Hewan");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, -1, -1));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel7.setText("Form Data Hewan");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, -1, -1));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Data Hewan");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 390, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Dashboard");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 80, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -177,7 +254,15 @@ private ArrayList<Integer> idPemilikList = new ArrayList<>();
         jLabel2.setText("Sistem");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 70, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
+        cmbPemilik.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPemilik.addActionListener(this::cmbPemilikActionPerformed);
+        getContentPane().add(cmbPemilik, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, 230, 30));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel13.setText("Umur (tahun)");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 290, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg1.png"))); // NOI18N
         jLabel1.setText("ppp");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 1361, -1));
 
@@ -192,37 +277,176 @@ private ArrayList<Integer> idPemilikList = new ArrayList<>();
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbJenisHewanActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+    try {
+        if (idHewan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data hewan yang ingin diedit!");
+            return;
+        }
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+        if (cmbPemilik.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Data pemilik belum tersedia!");
+            return;
+        }
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+        String namaHewan = txtNamaHewan.getText();
+        String jenisHewan = cmbJenisHewan.getSelectedItem().toString();
+        String umurText = txtUmur.getText();
+        String catatan = txtCatatan.getText();
 
-    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnUbahActionPerformed
+        if (namaHewan.isEmpty() || umurText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama hewan dan umur harus diisi!");
+            return;
+        }
 
-    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHapusActionPerformed
+        int indexPemilik = cmbPemilik.getSelectedIndex();
+        int idPemilik = idPemilikList.get(indexPemilik);
+        int umur = Integer.parseInt(umurText);
 
-    private void btnBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBersihkanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBersihkanActionPerformed
+        Connection conn = Koneksi.getConnection();
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String sql = "UPDATE hewan SET id_pemilik = ?, nama_hewan = ?, jenis_hewan = ?, "
+                   + "umur = ?, catatan = ? WHERE id_hewan = ?";
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, idPemilik);
+        pst.setString(2, namaHewan);
+        pst.setString(3, jenisHewan);
+        pst.setInt(4, umur);
+        pst.setString(5, catatan);
+        pst.setString(6, idHewan);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Data hewan berhasil diedit.");
+
+        tampilData();
+        kosongkanForm();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Umur harus berupa angka!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengedit data hewan: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+    new AdminFrame().setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    kosongkanForm();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnHapus1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapus1ActionPerformed
+    try {
+        if (idHewan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data hewan yang ingin dihapus!");
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin menghapus data hewan ini?",
+            "Konfirmasi Hapus",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            Connection conn = Koneksi.getConnection();
+
+            String sql = "DELETE FROM hewan WHERE id_hewan = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, idHewan);
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Data hewan berhasil dihapus.");
+
+            tampilData();
+            kosongkanForm();
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menghapus data hewan: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnHapus1ActionPerformed
+
+    private void txtUmurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUmurActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtUmurActionPerformed
+
+    private void cmbPemilikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPemilikActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPemilikActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+    try {
+        if (cmbPemilik.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Data pemilik belum tersedia!");
+            return;
+        }
+
+        String namaHewan = txtNamaHewan.getText();
+        String jenisHewan = cmbJenisHewan.getSelectedItem().toString();
+        String umurText = txtUmur.getText();
+        String catatan = txtCatatan.getText();
+
+        if (namaHewan.isEmpty() || umurText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama hewan dan umur harus diisi!");
+            return;
+        }
+
+        int indexPemilik = cmbPemilik.getSelectedIndex();
+        int idPemilik = idPemilikList.get(indexPemilik);
+        int umur = Integer.parseInt(umurText);
+
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "INSERT INTO hewan (id_pemilik, nama_hewan, jenis_hewan, umur, catatan) "
+                   + "VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, idPemilik);
+        pst.setString(2, namaHewan);
+        pst.setString(3, jenisHewan);
+        pst.setInt(4, umur);
+        pst.setString(5, catatan);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Data hewan berhasil ditambahkan.");
+
+        tampilData();
+        kosongkanForm();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Umur harus berupa angka!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menambah data hewan: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void tblHewanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHewanMouseClicked
+ int baris = tblHewan.getSelectedRow();
+
+    idHewan = tblHewan.getValueAt(baris, 0).toString();
+
+    String idPemilikTabel = tblHewan.getValueAt(baris, 1).toString();
+
+    for (int i = 0; i < idPemilikList.size(); i++) {
+        if (idPemilikList.get(i).toString().equals(idPemilikTabel)) {
+            cmbPemilik.setSelectedIndex(i);
+            break;
+        }
+    }
+
+    txtNamaHewan.setText(tblHewan.getValueAt(baris, 3).toString());
+    cmbJenisHewan.setSelectedItem(tblHewan.getValueAt(baris, 4).toString());
+    txtUmur.setText(tblHewan.getValueAt(baris, 5).toString());
+    txtCatatan.setText(tblHewan.getValueAt(baris, 6).toString());
+    }//GEN-LAST:event_tblHewanMouseClicked
 
     /**
      * @param args the command line arguments
@@ -250,35 +474,29 @@ private ArrayList<Integer> idPemilikList = new ArrayList<>();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnBersihkan;
-    private javax.swing.JToggleButton btnHapus;
+    private javax.swing.JToggleButton btnEdit;
+    private javax.swing.JToggleButton btnHapus1;
+    private javax.swing.JToggleButton btnKembali;
     private javax.swing.JToggleButton btnLogout;
+    private javax.swing.JToggleButton btnReset;
     private javax.swing.JToggleButton btnSimpan;
-    private javax.swing.JToggleButton btnUbah;
+    private javax.swing.JToggleButton btnTambah;
     private javax.swing.JComboBox<String> cmbJenisHewan;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> cmbPemilik;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblHewan;
+    private javax.swing.JTextArea txtCatatan;
+    private javax.swing.JTextField txtNamaHewan;
+    private javax.swing.JTextField txtUmur;
     // End of variables declaration//GEN-END:variables
 }
