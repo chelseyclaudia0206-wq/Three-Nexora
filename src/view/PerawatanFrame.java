@@ -4,19 +4,88 @@
  */
 package view;
 
-/**
- *
- * @author Chelsey Claudia
- */
+import config.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class PerawatanFrame extends javax.swing.JFrame {
     
+    private String idPerawatan = "";
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PerawatanFrame.class.getName());
 
+    private void isiComboBox() {
+    cmbJenisHewan.removeAllItems();
+    cmbJenisHewan.addItem("Kucing");
+    cmbJenisHewan.addItem("Anjing");
+    cmbJenisHewan.addItem("Kelinci");
+
+    cmbJenisPerawatan.removeAllItems();
+    cmbJenisPerawatan.addItem("Makan");
+    cmbJenisPerawatan.addItem("Mandi");
+    cmbJenisPerawatan.addItem("Grooming");
+    cmbJenisPerawatan.addItem("Cek Kesehatan");
+
+    cmbStatus.removeAllItems();
+    cmbStatus.addItem("Belum Selesai");
+    cmbStatus.addItem("Selesai");
+}
+    
+    private void tampilData() {
+    DefaultTableModel model = new DefaultTableModel();
+
+    model.addColumn("ID Perawatan");
+    model.addColumn("Jenis Hewan");
+    model.addColumn("Tanggal");
+    model.addColumn("Jenis Perawatan");
+    model.addColumn("Keterangan");
+    model.addColumn("Status");
+
+    try {
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "SELECT id_perawatan, jenis_hewan, tanggal_perawatan, jenis_perawatan, keterangan, status FROM perawatan";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id_perawatan"),
+                rs.getString("jenis_hewan"),
+                rs.getString("tanggal_perawatan"),
+                rs.getString("jenis_perawatan"),
+                rs.getString("keterangan"),
+                rs.getString("status")
+            });
+        }
+
+        tblPerawatan.setModel(model);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menampilkan data perawatan: " + e.getMessage());
+    }
+}
+
+    private void kosongkanForm() {
+    idPerawatan = "";
+
+    cmbJenisHewan.setSelectedIndex(0);
+    dcTanggalPerawatan.setDate(null);
+    cmbJenisPerawatan.setSelectedIndex(0);
+    txtKeterangan.setText("");
+    cmbStatus.setSelectedIndex(0);
+}
+    
     /**
      * Creates new form PerawatanFrame
      */
     public PerawatanFrame() {
         initComponents();
+        isiComboBox();
+        tampilData();
     }
 
     /**
@@ -28,21 +97,305 @@ public class PerawatanFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblPerawatan = new javax.swing.JTable();
+        btnHapus = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        btnKembali = new javax.swing.JButton();
+        btnTambah = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        cmbStatus = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtKeterangan = new javax.swing.JTextArea();
+        cmbJenisPerawatan = new javax.swing.JComboBox<>();
+        dcTanggalPerawatan = new com.toedter.calendar.JDateChooser();
+        cmbJenisHewan = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        jLabel11.setText("Daftar Perawatan");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 320, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel10.setText("Kelola data perawatan harian hewan yang sedang dititipkan");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, -1, -1));
+
+        tblPerawatan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID Perawatan", "Jenis Hewan", "Tanggal", "Jenis Perawatan", "Keterangan", "Status"
+            }
+        ));
+        tblPerawatan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPerawatanMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblPerawatan);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 360, 940, 330));
+
+        btnHapus.setBackground(new java.awt.Color(255, 0, 0));
+        btnHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnHapus.setForeground(new java.awt.Color(255, 255, 255));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+        getContentPane().add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 290, -1, -1));
+
+        btnEdit.setBackground(new java.awt.Color(45, 37, 0));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
+
+        btnReset.setBackground(new java.awt.Color(45, 36, 1));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setText("Reset");
+        btnReset.addActionListener(this::btnResetActionPerformed);
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 290, -1, -1));
+
+        btnKembali.setBackground(new java.awt.Color(43, 39, 0));
+        btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(255, 255, 255));
+        btnKembali.setText("Kembali");
+        btnKembali.addActionListener(this::btnKembaliActionPerformed);
+        getContentPane().add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 290, -1, -1));
+
+        btnTambah.setBackground(new java.awt.Color(44, 39, 0));
+        btnTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnTambah.setForeground(new java.awt.Color(255, 255, 255));
+        btnTambah.setText("+ Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+        getContentPane().add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setText("Tanggal Perawatan");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setText("Jenis Hewan");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setText("Jenis Perawatan");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("Keterangan");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 110, -1, -1));
+
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih", "Belum Selesai", "Selesai" }));
+        getContentPane().add(cmbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, 220, 30));
+
+        txtKeterangan.setColumns(20);
+        txtKeterangan.setRows(5);
+        jScrollPane1.setViewportView(txtKeterangan);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 110, 400, 150));
+
+        cmbJenisPerawatan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih", "Makan", "Mandi", "Grooming", "Cek Kesehatan" }));
+        getContentPane().add(cmbJenisPerawatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, 220, 30));
+        getContentPane().add(dcTanggalPerawatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 150, 220, 30));
+
+        cmbJenisHewan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih", "Kucing", "Anjing", "Kelinci" }));
+        getContentPane().add(cmbJenisHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 110, 220, 30));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("Status");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setText("Form Perawatan Hewan");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Penitipan Hewan");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Sistem");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, -1));
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/stiker1.png"))); // NOI18N
+        jLabel13.setText("jLabel13");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 210, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+    try {
+        if (idPerawatan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data perawatan yang ingin diedit!");
+            return;
+        }
+
+        if (dcTanggalPerawatan.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal perawatan harus dipilih!");
+            return;
+        }
+
+        String jenisHewan = cmbJenisHewan.getSelectedItem().toString();
+        String jenisPerawatan = cmbJenisPerawatan.getSelectedItem().toString();
+        String keterangan = txtKeterangan.getText();
+        String status = cmbStatus.getSelectedItem().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tanggalPerawatan = sdf.format(dcTanggalPerawatan.getDate());
+
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "UPDATE perawatan SET jenis_hewan = ?, tanggal_perawatan = ?, "
+                   + "jenis_perawatan = ?, keterangan = ?, status = ? "
+                   + "WHERE id_perawatan = ?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, jenisHewan);
+        pst.setString(2, tanggalPerawatan);
+        pst.setString(3, jenisPerawatan);
+        pst.setString(4, keterangan);
+        pst.setString(5, status);
+        pst.setString(6, idPerawatan);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Data perawatan berhasil diedit.");
+
+        tampilData();
+        kosongkanForm();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengedit data perawatan: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+    try {
+        if (idPerawatan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data perawatan yang ingin dihapus!");
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin menghapus data perawatan ini?",
+            "Konfirmasi Hapus",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            Connection conn = Koneksi.getConnection();
+
+            String sql = "DELETE FROM perawatan WHERE id_perawatan = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, idPerawatan);
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Data perawatan berhasil dihapus.");
+
+            tampilData();
+            kosongkanForm();
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menghapus data perawatan: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    kosongkanForm();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+    new AdminFrame().setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+    try {
+        if (dcTanggalPerawatan.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Tanggal perawatan harus dipilih!");
+            return;
+        }
+
+        String jenisHewan = cmbJenisHewan.getSelectedItem().toString();
+        String jenisPerawatan = cmbJenisPerawatan.getSelectedItem().toString();
+        String keterangan = txtKeterangan.getText();
+        String status = cmbStatus.getSelectedItem().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tanggalPerawatan = sdf.format(dcTanggalPerawatan.getDate());
+
+        Connection conn = Koneksi.getConnection();
+
+        String sql = "INSERT INTO perawatan "
+                   + "(jenis_hewan, tanggal_perawatan, jenis_perawatan, keterangan, status) "
+                   + "VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, jenisHewan);
+        pst.setString(2, tanggalPerawatan);
+        pst.setString(3, jenisPerawatan);
+        pst.setString(4, keterangan);
+        pst.setString(5, status);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Data perawatan berhasil ditambahkan.");
+
+        tampilData();
+        kosongkanForm();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menambah data perawatan: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void tblPerawatanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPerawatanMouseClicked
+int baris = tblPerawatan.getSelectedRow();
+
+    idPerawatan = tblPerawatan.getValueAt(baris, 0).toString();
+
+    cmbJenisHewan.setSelectedItem(tblPerawatan.getValueAt(baris, 1).toString());
+
+    try {
+        java.util.Date tanggal = new SimpleDateFormat("yyyy-MM-dd").parse(tblPerawatan.getValueAt(baris, 2).toString());
+        dcTanggalPerawatan.setDate(tanggal);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengambil tanggal: " + e.getMessage());
+    }
+
+    cmbJenisPerawatan.setSelectedItem(tblPerawatan.getValueAt(baris, 3).toString());
+    txtKeterangan.setText(tblPerawatan.getValueAt(baris, 4).toString());
+    cmbStatus.setSelectedItem(tblPerawatan.getValueAt(baris, 5).toString());
+    }//GEN-LAST:event_tblPerawatanMouseClicked
 
     /**
      * @param args the command line arguments
@@ -70,5 +423,30 @@ public class PerawatanFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnKembali;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JComboBox<String> cmbJenisHewan;
+    private javax.swing.JComboBox<String> cmbJenisPerawatan;
+    private javax.swing.JComboBox<String> cmbStatus;
+    private com.toedter.calendar.JDateChooser dcTanggalPerawatan;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblPerawatan;
+    private javax.swing.JTextArea txtKeterangan;
     // End of variables declaration//GEN-END:variables
 }
