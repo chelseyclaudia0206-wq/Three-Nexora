@@ -26,8 +26,6 @@ private ArrayList<Integer> idPemilikList = new ArrayList<>();
     
     public DataHewanFrame() {
     initComponents();
-    loadPemilik();
-    tampilData();
 }
   
     /**

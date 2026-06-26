@@ -117,7 +117,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDaftarActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-String username = txtUsername.getText();
+    String username = txtUsername.getText();
     String password = new String(txtPassword.getPassword());
 
     if (username.isEmpty() || password.isEmpty()) {
@@ -142,18 +142,20 @@ String username = txtUsername.getText();
 
             if (role.equalsIgnoreCase("admin")) {
                 new AdminFrame().setVisible(true);
-            } else {
+                this.dispose();
+            } else if (role.equalsIgnoreCase("pemilik")) {
                 new UserFrame().setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Role tidak dikenali: " + role);
             }
-
-            this.dispose();
 
         } else {
             JOptionPane.showMessageDialog(this, "Username atau password salah!");
         }
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Terjadi error: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Login gagal: " + e.getMessage());
     }
     }//GEN-LAST:event_btnLoginActionPerformed
 
