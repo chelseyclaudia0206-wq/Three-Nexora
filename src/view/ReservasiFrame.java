@@ -12,7 +12,6 @@ import config.Koneksi;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class ReservasiFrame extends javax.swing.JFrame {
@@ -83,17 +82,17 @@ private int getHargaByJenis(String jenisHewan) {
 
     // Menambahkan Variabel ID
     private String idReservasi = "";
-    private ArrayList<Integer> idHewanList = new ArrayList<>();
-    private ArrayList<String> jenisHewanList = new ArrayList<>();
     
     /**
      * Creates new form ReservasiFrame
      */
     public ReservasiFrame() {
         initComponents();
+        isiJenisHewan();
         tampilData();
         txtHargaPerHari.setEditable(false);
         txtTotalBiaya.setEditable(false);
+    setLocationRelativeTo(null);
     }
     
 private void kosongkanForm() {

@@ -10,6 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Hewan;
+import model.Kucing;
+import model.Anjing;
+import model.Kelinci;
 
 public class LihatHewanFrame extends javax.swing.JFrame {
     
@@ -52,6 +56,58 @@ public class LihatHewanFrame extends javax.swing.JFrame {
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Gagal menampilkan data hewan: " + e.getMessage());
     }
+}
+    
+    private void tampilkanDetailHewan() {
+    int baris = tblHewan.getSelectedRow();
+
+    if (baris < 0) {
+        JOptionPane.showMessageDialog(this, "Pilih data hewan terlebih dahulu!");
+        return;
+    }
+
+    int idHewan = Integer.parseInt(tblHewan.getValueAt(baris, 0).toString());
+    String pemilik = tblHewan.getValueAt(baris, 1).toString();
+    String namaHewan = tblHewan.getValueAt(baris, 2).toString();
+    String jenisHewan = tblHewan.getValueAt(baris, 3).toString();
+    int umur = Integer.parseInt(tblHewan.getValueAt(baris, 4).toString());
+    String catatan = tblHewan.getValueAt(baris, 5).toString();
+
+    Hewan hewan;
+
+    if (jenisHewan.equalsIgnoreCase("Kucing")) {
+        hewan = new Kucing(idHewan, namaHewan, jenisHewan, umur, catatan);
+    } else if (jenisHewan.equalsIgnoreCase("Anjing")) {
+        hewan = new Anjing(idHewan, namaHewan, jenisHewan, umur, catatan);
+    } else if (jenisHewan.equalsIgnoreCase("Kelinci")) {
+        hewan = new Kelinci(idHewan, namaHewan, jenisHewan, umur, catatan);
+    } else {
+        hewan = new Hewan(idHewan, namaHewan, jenisHewan, umur, catatan);
+    }
+
+    String infoCasting = "";
+
+    if (hewan instanceof Kucing) {
+        Kucing kucing = (Kucing) hewan;
+        infoCasting = "Objek superclass Hewan berhasil di-casting menjadi subclass Kucing.";
+    } else if (hewan instanceof Anjing) {
+        Anjing anjing = (Anjing) hewan;
+        infoCasting = "Objek superclass Hewan berhasil di-casting menjadi subclass Anjing.";
+    } else if (hewan instanceof Kelinci) {
+        Kelinci kelinci = (Kelinci) hewan;
+        infoCasting = "Objek superclass Hewan berhasil di-casting menjadi subclass Kelinci.";
+    }
+
+    JOptionPane.showMessageDialog(this,
+            "Detail Hewan\n"
+            + "ID Hewan: " + idHewan + "\n"
+            + "Pemilik: " + pemilik + "\n"
+            + "Nama Hewan: " + namaHewan + "\n"
+            + "Jenis Hewan: " + jenisHewan + "\n"
+            + "Umur: " + umur + "\n"
+            + "Catatan: " + catatan + "\n\n"
+            + infoCasting
+    );
 }
     
     /**
@@ -114,6 +170,11 @@ public class LihatHewanFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblHewan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHewanMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblHewan);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 200, 710, 490));
@@ -133,6 +194,10 @@ public class LihatHewanFrame extends javax.swing.JFrame {
     new UserFrame().setVisible(true);
     this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
+
+    private void tblHewanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHewanMouseClicked
+    tampilkanDetailHewan();
+    }//GEN-LAST:event_tblHewanMouseClicked
 
     /**
      * @param args the command line arguments

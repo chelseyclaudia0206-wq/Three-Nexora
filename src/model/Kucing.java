@@ -5,27 +5,28 @@
 package model;
 
 public class Kucing extends Hewan {
-    private String warnaBulu;
+     private String kebutuhanPerawatan;
 
     public Kucing() {
+        super();
     }
 
-    public Kucing(int idHewan, String namaHewan, String jenisHewan, int umur, String catatan, String warnaBulu) {
-        super(idHewan, namaHewan, jenisHewan, umur, catatan);
-        this.warnaBulu = warnaBulu;
+    public Kucing(int idHewan, String namaHewan, String jenisHewan, int umur, String kebutuhanPerawatan) {
+        super(idHewan, namaHewan, jenisHewan, umur, kebutuhanPerawatan);
+        this.kebutuhanPerawatan = kebutuhanPerawatan;
     }
 
-    public String getWarnaBulu() {
-        return warnaBulu;
+    public String getKebutuhanPerawatan() {
+        return kebutuhanPerawatan;
     }
 
-    public void setWarnaBulu(String warnaBulu) {
-        this.warnaBulu = warnaBulu;
+    public void setKebutuhanPerawatan(String kebutuhanPerawatan) {
+        this.kebutuhanPerawatan = kebutuhanPerawatan;
     }
 
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-        System.out.println("Kebutuhan Perawatan: Grooming bulu dan kebersihan kandang.");
+        System.out.println("Kebutuhan Perawatan: " + kebutuhanPerawatan);
     }
 }

@@ -13,27 +13,34 @@ import model.Reservasi;
 public class TesPBO {
 
     public static void main(String[] args) {
-        Hewan h1 = new Kucing(1, "Milo", "Kucing", 2, "Tidak suka makanan basah", "Putih");
-        Hewan h2 = new Anjing(2, "Buddy", "Anjing", 3, "Aktif dan suka jalan", "Golden Retriever");
-        Hewan h3 = new Kelinci(3, "Bunny", "Kelinci", 1, "Suka wortel", "Wortel dan sayuran");
 
-        h1.tampilkanInfo();
-        System.out.println("-------------------");
+        Hewan hewan1 = new Kucing(1, "Milo", "Kucing", 2, "Grooming bulu dan kebersihan kandang");
+        Hewan hewan2 = new Anjing(2, "Buddy", "Anjing", 3, "Mandi rutin dan jalan pagi");
+        Hewan hewan3 = new Kelinci(3, "Bunny", "Kelinci", 1, "Membersihkan kandang dan memberi pakan sayuran");
 
-        h2.tampilkanInfo();
-        System.out.println("-------------------");
+        Hewan[] daftarHewan = {hewan1, hewan2, hewan3};
 
-        h3.tampilkanInfo();
-        System.out.println("-------------------");
+        for (Hewan hewan : daftarHewan) {
+            hewan.tampilkanInfo();
 
-        Reservasi r1 = new Reservasi(1, 1, "2026-06-13", "2026-06-16", 3);
-        System.out.println("Total Biaya: Rp" + r1.getTotalBiaya());
+            if (hewan instanceof Kucing) {
+                Kucing kucing = (Kucing) hewan;
+                System.out.println("Casting berhasil: Hewan menjadi Kucing");
+            } else if (hewan instanceof Anjing) {
+                Anjing anjing = (Anjing) hewan;
+                System.out.println("Casting berhasil: Hewan menjadi Anjing");
+            } else if (hewan instanceof Kelinci) {
+                Kelinci kelinci = (Kelinci) hewan;
+                System.out.println("Casting berhasil: Hewan menjadi Kelinci");
+            }
 
-        System.out.println("-------------------");
-
-        if (h3 instanceof Kelinci) {
-            Kelinci kelinci = (Kelinci) h3;
-            System.out.println("Hewan ini adalah kelinci dengan makanan favorit: " + kelinci.getJenisMakanan());
+            System.out.println("--------------------------------");
         }
+
+        Reservasi reservasi = new Reservasi(1, 1, "2026-06-27", "2026-06-30", 3);
+
+        System.out.println("Biaya normal: " + reservasi.hitungBiaya());
+        System.out.println("Biaya dengan lama hari tertentu: " + reservasi.hitungBiaya(5));
+        System.out.println("Biaya dengan tarif khusus: " + reservasi.hitungBiaya(5, 70000));
     }
 }

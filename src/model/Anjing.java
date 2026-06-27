@@ -5,27 +5,28 @@
 package model;
 
 public class Anjing extends Hewan {
-    private String ras;
+     private String kebutuhanPerawatan;
 
     public Anjing() {
+        super();
     }
 
-    public Anjing(int idHewan, String namaHewan, String jenisHewan, int umur, String catatan, String ras) {
-        super(idHewan, namaHewan, jenisHewan, umur, catatan);
-        this.ras = ras;
+    public Anjing(int idHewan, String namaHewan, String jenisHewan, int umur, String kebutuhanPerawatan) {
+        super(idHewan, namaHewan, jenisHewan, umur, kebutuhanPerawatan);
+        this.kebutuhanPerawatan = kebutuhanPerawatan;
     }
 
-    public String getRas() {
-        return ras;
+    public String getKebutuhanPerawatan() {
+        return kebutuhanPerawatan;
     }
 
-    public void setRas(String ras) {
-        this.ras = ras;
+    public void setKebutuhanPerawatan(String kebutuhanPerawatan) {
+        this.kebutuhanPerawatan = kebutuhanPerawatan;
     }
 
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-        System.out.println("Kebutuhan Perawatan: Jalan pagi dan mandi rutin.");
+        System.out.println("Kebutuhan Perawatan: " + kebutuhanPerawatan);
     }
 }
