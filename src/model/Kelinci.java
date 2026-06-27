@@ -26,6 +26,6 @@ public class Kelinci extends Hewan {
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-        System.out.println("Jenis Makanan Kelinci: " + jenisMakanan);
+        System.out.println("Kebutuhan Perawatan: Membersihkan kandang dan memberi pakan sayuran.");
     }
 }

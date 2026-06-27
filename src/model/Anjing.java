@@ -26,6 +26,6 @@ public class Anjing extends Hewan {
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-        System.out.println("Ras Anjing: " + ras);
+        System.out.println("Kebutuhan Perawatan: Jalan pagi dan mandi rutin.");
     }
 }

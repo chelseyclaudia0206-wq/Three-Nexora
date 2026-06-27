@@ -156,7 +156,7 @@ String nama = txtNama.getText();
         pst.setString(2, username);
         pst.setString(3, password);
         pst.setString(4, noHp);
-        pst.setString(5, "user");
+        pst.setString(5, "pemilik");
 
         pst.executeUpdate();
 

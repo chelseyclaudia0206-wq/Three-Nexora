@@ -85,6 +85,7 @@ private int getHargaByJenis(String jenisHewan) {
     private String idReservasi = "";
     private ArrayList<Integer> idHewanList = new ArrayList<>();
     private ArrayList<String> jenisHewanList = new ArrayList<>();
+    
     /**
      * Creates new form ReservasiFrame
      */
