@@ -138,7 +138,6 @@ public class DataHewanFrame extends javax.swing.JFrame {
         btnReset = new javax.swing.JToggleButton();
         btnKembali = new javax.swing.JToggleButton();
         btnEdit = new javax.swing.JToggleButton();
-        btnSimpan = new javax.swing.JToggleButton();
         txtUmur = new javax.swing.JTextField();
         txtNamaHewan = new javax.swing.JTextField();
         cmbJenisHewan = new javax.swing.JComboBox<>();
@@ -181,11 +180,7 @@ public class DataHewanFrame extends javax.swing.JFrame {
 
         btnEdit.setText("Edit");
         btnEdit.addActionListener(this::btnEditActionPerformed);
-        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 380, 90, -1));
-
-        btnSimpan.setForeground(new java.awt.Color(51, 51, 0));
-        btnSimpan.setText("Simpan");
-        getContentPane().add(btnSimpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 380, 90, -1));
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 380, 90, -1));
 
         txtUmur.addActionListener(this::txtUmurActionPerformed);
         getContentPane().add(txtUmur, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, 230, 30));
@@ -218,7 +213,7 @@ public class DataHewanFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblHewan);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 427, 800, 270));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 427, 830, 270));
 
         btnHapus1.setText("Hapus");
         btnHapus1.addActionListener(this::btnHapus1ActionPerformed);
@@ -479,7 +474,6 @@ public class DataHewanFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton btnKembali;
     private javax.swing.JToggleButton btnLogout;
     private javax.swing.JToggleButton btnReset;
-    private javax.swing.JToggleButton btnSimpan;
     private javax.swing.JToggleButton btnTambah;
     private javax.swing.JComboBox<String> cmbJenisHewan;
     private javax.swing.JComboBox<String> cmbPemilik;

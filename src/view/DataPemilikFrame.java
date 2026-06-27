@@ -93,6 +93,7 @@ private void kosongkanForm() {
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lblDataPemilik = new javax.swing.JLabel();
+        chkTampilkanPassword = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -203,6 +204,11 @@ private void kosongkanForm() {
         lblDataPemilik.setForeground(new java.awt.Color(255, 255, 255));
         lblDataPemilik.setText("Data Pemilik");
         getContentPane().add(lblDataPemilik, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, -1, -1));
+
+        chkTampilkanPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        chkTampilkanPassword.setText("Tampilkan Password");
+        chkTampilkanPassword.addActionListener(this::chkTampilkanPasswordActionPerformed);
+        getContentPane().add(chkTampilkanPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 290, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -368,6 +374,14 @@ int baris = tblPemilik.getSelectedRow();
      this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
 
+    private void chkTampilkanPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTampilkanPasswordActionPerformed
+if (chkTampilkanPassword.isSelected()) {
+        txtPassword.setEchoChar((char) 0);
+    } else {
+        txtPassword.setEchoChar('*');
+    }
+    }//GEN-LAST:event_chkTampilkanPasswordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -399,6 +413,7 @@ int baris = tblPemilik.getSelectedRow();
     private javax.swing.JToggleButton btnKembali;
     private javax.swing.JToggleButton btnReset;
     private javax.swing.JToggleButton btnTambah;
+    private javax.swing.JCheckBox chkTampilkanPassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
