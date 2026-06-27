@@ -6,7 +6,6 @@ package view;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import config.Koneksi;
 import java.sql.Connection;
@@ -427,7 +426,7 @@ try {
         }
 
         long selisihMillis = checkoutDate.getTime() - checkinDate.getTime();
-        long lamaHari = TimeUnit.MILLISECONDS.toDays(selisihMillis);
+        long lamaHari = selisihMillis / (1000 * 60 * 60 * 24);
 
         if (lamaHari <= 0) {
             JOptionPane.showMessageDialog(this, "Tanggal check-out harus setelah tanggal check-in!");
