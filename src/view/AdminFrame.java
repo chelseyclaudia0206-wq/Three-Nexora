@@ -28,6 +28,7 @@ public class AdminFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblDashboard1 = new javax.swing.JLabel();
         lblDashboard = new javax.swing.JLabel();
         btnLogout = new javax.swing.JToggleButton();
         btnPerawatan = new javax.swing.JToggleButton();
@@ -37,39 +38,52 @@ public class AdminFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        lblDashboard1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lblDashboard1.setText("Haloo Admin !");
+        getContentPane().add(lblDashboard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, -1, -1));
+
         lblDashboard.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblDashboard.setForeground(new java.awt.Color(255, 255, 255));
-        lblDashboard.setText("Dashboard");
-        getContentPane().add(lblDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, -1, -1));
+        lblDashboard.setText("Dashboard Admin");
+        getContentPane().add(lblDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, -1));
 
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLogout.setText("Logout");
         btnLogout.addActionListener(this::btnLogoutActionPerformed);
         getContentPane().add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 660, 100, 40));
 
+        btnPerawatan.setBackground(new java.awt.Color(45, 40, 0));
         btnPerawatan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnPerawatan.setForeground(new java.awt.Color(255, 255, 255));
         btnPerawatan.setText("Perawatan");
         btnPerawatan.addActionListener(this::btnPerawatanActionPerformed);
-        getContentPane().add(btnPerawatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 510, 140, -1));
+        getContentPane().add(btnPerawatan, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 420, 190, 80));
 
+        btnReservasi.setBackground(new java.awt.Color(64, 50, 0));
         btnReservasi.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnReservasi.setForeground(new java.awt.Color(255, 255, 255));
         btnReservasi.setText("Reservasi");
         btnReservasi.addActionListener(this::btnReservasiActionPerformed);
-        getContentPane().add(btnReservasi, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, 140, -1));
+        getContentPane().add(btnReservasi, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 420, 190, 80));
 
+        btnDataHewan.setBackground(new java.awt.Color(50, 43, 1));
         btnDataHewan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDataHewan.setForeground(new java.awt.Color(255, 255, 255));
         btnDataHewan.setText("Data Hewan");
         btnDataHewan.addActionListener(this::btnDataHewanActionPerformed);
-        getContentPane().add(btnDataHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 140, -1));
+        getContentPane().add(btnDataHewan, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 270, 190, 80));
 
+        btnDataPemilik.setBackground(new java.awt.Color(69, 57, 0));
         btnDataPemilik.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDataPemilik.setForeground(new java.awt.Color(255, 255, 255));
         btnDataPemilik.setText("Data Pemilik");
         btnDataPemilik.addActionListener(this::btnDataPemilikActionPerformed);
-        getContentPane().add(btnDataPemilik, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, -1, -1));
+        getContentPane().add(btnDataPemilik, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 190, 80));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -83,6 +97,9 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jLabel4.setText("jLabel4");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -146,6 +163,8 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblDashboard;
+    private javax.swing.JLabel lblDashboard1;
     // End of variables declaration//GEN-END:variables
 }
